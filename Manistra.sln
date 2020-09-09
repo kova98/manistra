@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manistra.API", "Manistra.API\Manistra.API.csproj", "{6F90593E-5A02-4236-AF7C-B4ED3AA8C67A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6F90593E-5A02-4236-AF7C-B4ED3AA8C67A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F90593E-5A02-4236-AF7C-B4ED3AA8C67A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F90593E-5A02-4236-AF7C-B4ED3AA8C67A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F90593E-5A02-4236-AF7C-B4ED3AA8C67A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {92157633-3225-45E1-86E9-1B19875EFE46}
+	EndGlobalSection
+EndGlobal
