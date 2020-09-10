@@ -7,6 +7,6 @@ namespace Manistra.API.ResourceParameters
 {
     public class PastaResourceParameters
     {
-        public string Title { get; set; } = "";
+        public string? SearchQuery { get; set; } = "";
     }
 }

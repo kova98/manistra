@@ -8,8 +8,8 @@ final _root = 'http://10.0.2.2:62469/api';
 class ManistraApiProvider {
   Client client = Client();
 
-  Future<List<PastaModel>> fetchPastas() async {
-    final response = await client.get('$_root/pasta');
+  Future<List<PastaModel>> fetchPastas(String query) async {
+    final response = await client.get('$_root/pasta?searchQuery=$query');
 
     if (response.statusCode == 200) {
       final pastas = json.decode(response.body) as List;

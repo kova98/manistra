@@ -5,7 +5,7 @@ import 'manistra_api_provider.dart';
 class Repository {
   final manistraApiProvider = ManistraApiProvider();
 
-  Future<List<PastaModel>> fetchPastas() {
-    return manistraApiProvider.fetchPastas();
+  Future<List<PastaModel>> fetchPastas({String query}) {
+    return manistraApiProvider.fetchPastas(query);
   }
 }

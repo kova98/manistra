@@ -17,9 +17,11 @@ namespace Manistra.API.DataAccess
         {
             var pastas = dbSet.AsQueryable();
 
-            if (string.IsNullOrEmpty(parameters.Title) == false)
+            if (string.IsNullOrWhiteSpace(parameters.SearchQuery) == false)
             {
-                pastas = pastas.Where(x=>x.Title.ToUpper().Contains(parameters.Title));
+                pastas = pastas.Where(x => 
+                    x.Title.ToUpper().Contains(parameters.SearchQuery.ToUpper()) ||
+                    x.Content.ToUpper().Contains(parameters.SearchQuery.ToUpper()));
             }
 
             return pastas;
