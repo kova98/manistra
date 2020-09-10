@@ -13,6 +13,7 @@ namespace Manistra.API.Profiles
         public PastaProfile()
         {
             CreateMap<Pasta, PastaDto>();
+            CreateMap<PastaForCreationDto, Pasta>();
         }
     }
 }

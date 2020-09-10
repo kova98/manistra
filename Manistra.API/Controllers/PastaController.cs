@@ -32,6 +32,36 @@ namespace Manistra.API.Controllers
             var pastasDto = mapper.Map<IEnumerable<PastaDto>>(pastas);
 
             return Ok(pastasDto);
-        }   
+        }
+
+        [HttpGet("{id}", Name = "GetPasta")]
+        public ActionResult<PastaDto> GetPasta(long id)
+        {
+            var pasta = pastaRepo.Get(id);
+
+            if (pasta == null)
+            {
+                return NotFound();
+            }
+
+            var pastaDto = mapper.Map<PastaDto>(pasta);
+
+            return Ok(pastaDto);
+        }
+
+        [HttpPost]
+        public ActionResult<PastaDto> CreatePasta(PastaForCreationDto pasta)
+        {
+            var pastaEntity = mapper.Map<Pasta>(pasta);
+
+            pastaRepo.Add(pastaEntity);
+
+            var pastaDto = mapper.Map<PastaDto>(pastaEntity);
+
+            return CreatedAtRoute(
+               "GetPasta",
+               new { id = pastaDto.Id },
+               pastaDto);
+        }
     }
 }
