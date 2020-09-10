@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Manistra.API.DataAccess
 {
-    interface IRepository<Entity>
+    public interface IRepository<Entity>
     {
         IQueryable<Entity> GetAll();
         Entity Get(long id);
