@@ -6,7 +6,7 @@ class PastasBloc {
   final _repository = Repository();
   final _pastas = BehaviorSubject<List<PastaModel>>();
 
-  String searchQuery = "query";
+  String searchQuery = "";
   bool isSearching = false;
 
   Stream<List<PastaModel>> get pastas => _pastas.stream;

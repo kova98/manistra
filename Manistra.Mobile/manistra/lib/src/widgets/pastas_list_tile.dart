@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:manistra/src/models/pasta_model.dart';
+import 'package:manistra/src/screens/pasta_detail.dart';
 
 class PastasListTile extends StatelessWidget {
   final PastaModel pasta;
@@ -10,6 +11,12 @@ class PastasListTile extends StatelessWidget {
     return Column(
       children: [
         ListTile(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PastaDetailScreen(pasta),
+            ),
+          ),
           title: Text(pasta.title),
           subtitle: Text(pasta.content),
           trailing: Column(

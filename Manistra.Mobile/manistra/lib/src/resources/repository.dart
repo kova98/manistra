@@ -8,4 +8,8 @@ class Repository {
   Future<List<PastaModel>> fetchPastas({String query}) {
     return manistraApiProvider.fetchPastas(query);
   }
+
+  Future<PastaModel> submitPasta(PastaModel pasta) {
+    return manistraApiProvider.submitPasta(pasta);
+  }
 }

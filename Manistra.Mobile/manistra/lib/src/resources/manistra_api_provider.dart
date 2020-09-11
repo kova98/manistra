@@ -18,7 +18,27 @@ class ManistraApiProvider {
 
       return pastaList;
     } else {
-      throw Exception('Failed to load haikus');
+      throw Exception('Failed to fetch pastas');
     }
+  }
+
+  Future<PastaModel> submitPasta(PastaModel pasta) async {
+    var response = await client.post(
+      '$_root/pasta',
+      headers: getHeaders(),
+      body: json.encode(pasta.toMap()),
+    );
+
+    if (response.statusCode == 201) {
+      return PastaModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to post pasta');
+    }
+  }
+
+  getHeaders() {
+    return <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    };
   }
 }
