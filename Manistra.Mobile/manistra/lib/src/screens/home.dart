@@ -3,7 +3,7 @@ import 'package:manistra/src/blocs/pastas_provider.dart';
 import 'package:manistra/src/pastas_search_delegate.dart';
 import 'package:manistra/src/screens/pastas_list.dart';
 
-import 'new_pasta.dart';
+import 'package:manistra/src/screens/new_pasta.dart';
 
 class Home extends StatelessWidget {
   @override

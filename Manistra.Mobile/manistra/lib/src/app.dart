@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:manistra/src/blocs/pastas_provider.dart';
 import 'package:manistra/src/blocs/submit_provider.dart';
 import 'package:manistra/src/screens/home.dart';
-import 'blocs/pastas_provider.dart';
 
 class App extends StatelessWidget {
   Widget build(context) {

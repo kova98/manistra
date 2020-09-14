@@ -1,6 +1,5 @@
 import 'package:manistra/src/models/pasta_model.dart';
-
-import 'manistra_api_provider.dart';
+import 'package:manistra/src/resources/manistra_api_provider.dart';
 
 class Repository {
   final manistraApiProvider = ManistraApiProvider();

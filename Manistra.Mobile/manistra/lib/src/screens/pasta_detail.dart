@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:manistra/src/helpers/clipboard_helper.dart';
 import 'package:manistra/src/models/pasta_model.dart';
 
-class PastaDetailScreen extends StatelessWidget {
+class PastaDetailScreen extends StatelessWidget with ClipboardHelper {
   final PastaModel pasta;
 
   PastaDetailScreen(this.pasta);
@@ -17,7 +18,7 @@ class PastaDetailScreen extends StatelessWidget {
           ),
           IconButton(
             icon: Icon(Icons.content_copy),
-            onPressed: () {},
+            onPressed: () => copy(context, pasta.content),
           ),
         ],
       ),
