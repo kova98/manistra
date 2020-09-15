@@ -41,7 +41,7 @@ class PastasSearchDelegate extends SearchDelegate {
     bloc.searchQuery = query;
     bloc.fetchPastas();
 
-    return PastasList();
+    return PastasList(bloc.pastas);
   }
 
   @override

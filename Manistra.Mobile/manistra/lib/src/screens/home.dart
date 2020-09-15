@@ -10,38 +10,54 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = PastasProvider.of(context);
 
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Scaffold(
-                body: NewPastaScreen(),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Scaffold(
+                  body: NewPastaScreen(),
+                ),
               ),
-            ),
-          );
-        },
-      ),
-      appBar: AppBar(
-        leading: Icon(Icons.menu),
-        title: Center(
-          child: Text('manistra'),
+            );
+          },
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: PastasSearchDelegate(bloc),
-              );
-            },
-          )
-        ],
+        appBar: AppBar(
+          bottom: TabBar(
+            tabs: [
+              Tab(text: 'NEW'),
+              Tab(text: 'TOP'),
+              Tab(text: 'FAVORITES'),
+            ],
+          ),
+          leading: Icon(Icons.menu),
+          title: Center(
+            child: Text('manistra'),
+          ),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: PastasSearchDelegate(bloc),
+                );
+              },
+            )
+          ],
+        ),
+        body: TabBarView(
+          children: [
+            PastasList(bloc.latestPastas),
+            PastasList(bloc.topPastas),
+            PastasList(bloc.favoritePastas),
+          ],
+        ),
       ),
-      body: PastasList(),
     );
   }
 }

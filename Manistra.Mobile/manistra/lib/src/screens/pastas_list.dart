@@ -5,11 +5,15 @@ import 'package:manistra/src/models/pasta_model.dart';
 import 'package:manistra/src/widgets/pastas_list_tile.dart';
 
 class PastasList extends StatelessWidget {
+  final Stream<List<PastaModel>> stream;
+
+  PastasList(this.stream);
+
   Widget build(context) {
     final bloc = PastasProvider.of(context);
 
     return StreamBuilder(
-      stream: bloc.pastas,
+      stream: stream,
       builder: (context, AsyncSnapshot<List<PastaModel>> snapshot) {
         if (!snapshot.hasData) {
           bloc.fetchPastas();

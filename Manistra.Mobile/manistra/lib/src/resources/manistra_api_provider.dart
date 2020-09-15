@@ -8,8 +8,9 @@ final _root = 'http://10.0.2.2:62469/api';
 class ManistraApiProvider {
   Client client = Client();
 
-  Future<List<PastaModel>> fetchPastas(String query) async {
-    final response = await client.get('$_root/pasta?searchQuery=$query');
+  Future<List<PastaModel>> fetchPastas(String query, String orderBy) async {
+    final parameters = buildParametersString(query, orderBy);
+    final response = await client.get('$_root/pasta$parameters');
 
     if (response.statusCode == 200) {
       final pastas = json.decode(response.body) as List;
@@ -40,5 +41,25 @@ class ManistraApiProvider {
     return <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     };
+  }
+
+  buildParametersString(String query, String orderBy) {
+    var parametersString = '';
+
+    if (query != null && query.isNotEmpty) {
+      parametersString += '?searchQuery=$query';
+    }
+
+    if (orderBy != null && orderBy.isNotEmpty) {
+      if (query != null && query.isNotEmpty) {
+        parametersString += '&';
+      } else {
+        parametersString += '?';
+      }
+
+      parametersString += 'orderBy=$orderBy';
+    }
+
+    return parametersString;
   }
 }
