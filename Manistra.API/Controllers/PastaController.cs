@@ -53,6 +53,7 @@ namespace Manistra.API.Controllers
         public ActionResult<PastaDto> CreatePasta(PastaForCreationDto pasta)
         {
             var pastaEntity = mapper.Map<Pasta>(pasta);
+            pastaEntity.DateCreated = DateTime.Now;
 
             pastaRepo.Add(pastaEntity);
 

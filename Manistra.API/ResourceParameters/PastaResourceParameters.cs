@@ -8,5 +8,6 @@ namespace Manistra.API.ResourceParameters
     public class PastaResourceParameters
     {
         public string? SearchQuery { get; set; } = "";
+        public string? OrderBy { get; set; } = "";
     }
 }
