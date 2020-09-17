@@ -11,32 +11,30 @@ class PastasListTile extends StatelessWidget with ClipboardHelper {
   Widget build(context) {
     return Column(
       children: [
-        ListTile(
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Scaffold(
-                body: PastaDetailScreen(pasta),
+        Card(
+          child: ListTile(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Scaffold(
+                  body: PastaDetailScreen(pasta),
+                ),
               ),
             ),
+            onLongPress: () => copy(context, pasta.content),
+            title: Text(
+              pasta.title,
+              style: TextStyle(fontSize: 20),
+            ),
+            trailing: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(Icons.favorite_border),
+                Text('0'),
+              ],
+            ),
           ),
-          onLongPress: () => copy(context, pasta.content),
-          title: Text(pasta.title),
-          subtitle: Text(
-            pasta.content,
-            style: TextStyle(),
-          ),
-          trailing: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(Icons.favorite_border),
-              Text('0'),
-            ],
-          ),
-        ),
-        Divider(
-          height: 8.0,
         ),
       ],
     );
