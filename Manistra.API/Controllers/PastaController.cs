@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Manistra.API.Authentication;
 using Manistra.API.DataAccess;
 using Manistra.API.Entities;
 using Manistra.API.Models.Pasta;
 using Manistra.API.ResourceParameters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Manistra.API.Controllers
 {
+    [Authorize]
     [Route("api/pasta")]
     [ApiController]
     public class PastaController : ControllerBase
