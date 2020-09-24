@@ -32,17 +32,22 @@ namespace Manistra.API.Controllers
         }
 
         [HttpGet()]
-        public ActionResult<IEnumerable<PastaDto>> GetPastas(
+        public async Task<ActionResult<IEnumerable<PastaDto>>> GetPastas(
             [FromQuery] PastaResourceParameters parameters)
         {
             var pastas = pastaRepo.GetAll(parameters);
             var pastasDto = mapper.Map<IEnumerable<PastaDto>>(pastas);
 
+            var user = await GetUser();
+
+            SetIsFavoriteForPastaDto(pastas, pastasDto, user);
+
             return Ok(pastasDto);
         }
 
+
         [HttpGet("{id}", Name = "GetPasta")]
-        public ActionResult<PastaDto> GetPasta(long id)
+        public async Task<ActionResult<PastaDto>> GetPasta(long id)
         {
             var pasta = pastaRepo.Get(id);
 
@@ -52,9 +57,13 @@ namespace Manistra.API.Controllers
             }
 
             var pastaDto = mapper.Map<PastaDto>(pasta);
+            var user = await GetUser();
+
+            SetIsFavoriteForPastaDto(pasta as IEnumerable<Pasta>, pastaDto as IEnumerable<PastaDto>, user);
 
             return Ok(pastaDto);
         }
+
 
         [HttpPost]
         public ActionResult<PastaDto> CreatePasta(PastaForCreationDto pasta)
@@ -82,8 +91,7 @@ namespace Manistra.API.Controllers
                 return NotFound();
             }
 
-            var userName = HttpContext.User.Identity.Name;
-            var user = await userManager.FindByNameAsync(userName);
+            var user = await GetUser();
 
             bool isFavorite = ToggleFavorite(pasta, user);
 
@@ -107,6 +115,31 @@ namespace Manistra.API.Controllers
             }
 
             return isFavorite;
+        }
+
+        private void SetIsFavoriteForPastaDto(IEnumerable<Pasta> pastas, IEnumerable<PastaDto> pastasDto, User user)
+        {
+            foreach (var pasta in pastas)
+            {
+                var pastaDto = pastasDto.First(x => x.Id == pasta.Id);
+
+                if (pasta.FavoritedBy.Contains(user))
+                {
+                    pastaDto.IsFavorite = true;
+                }
+                else
+                {
+                    pastaDto.IsFavorite = false;
+
+                }
+            }
+        }
+
+        private async Task<User> GetUser()
+        {
+            var userName = HttpContext.User.Identity.Name;
+            var user = await userManager.FindByNameAsync(userName);
+            return user;
         }
     }
 }
