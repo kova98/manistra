@@ -33,7 +33,7 @@ class PastasListTile extends StatelessWidget with ClipboardHelper {
                 pasta.isFavorite
                     ? Icon(Icons.favorite, color: Colors.red)
                     : Icon(Icons.favorite_border),
-                Text('0'),
+                Text(pasta.favoriteCount.toString()),
               ],
             ),
           ),
