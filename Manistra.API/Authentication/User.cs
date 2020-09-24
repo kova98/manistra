@@ -9,6 +9,6 @@ namespace Manistra.API.Authentication
 {
     public class User : IdentityUser
     {
-        public ICollection<Pasta> Favorites { get; set; }
+        public ICollection<Pasta> Favorites { get; set; } = new List<Pasta>();
     }
 }

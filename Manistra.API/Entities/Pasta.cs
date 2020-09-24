@@ -13,6 +13,6 @@ namespace Manistra.API.Entities
         public string Title { get; set; }
         public string Content { get; set; }
         public DateTimeOffset DateCreated { get; set; }
-        public ICollection<User> FavoritedBy { get; set; }
+        public ICollection<User> FavoritedBy { get; set; } = new List<User>();
     }
 }

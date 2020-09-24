@@ -1,5 +1,6 @@
 ﻿using Manistra.API.Entities;
 using Manistra.API.ResourceParameters;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,20 @@ namespace Manistra.API.DataAccess
         {
         }
 
+        public override Pasta Get(long id)
+        {
+            var entity = context.Pastas
+                .Include(x=>x.FavoritedBy)
+                .FirstOrDefault(x => x.Id == id);
+
+            return entity;
+        }
+
         public IEnumerable<Pasta> GetAll(PastaResourceParameters parameters)
         {
-            var pastas = dbSet.AsQueryable();
+            var pastas = context.Pastas
+                .Include(x=>x.FavoritedBy)
+                .AsQueryable();
 
             if (string.IsNullOrWhiteSpace(parameters.SearchQuery) == false)
             {

@@ -10,6 +10,7 @@ using Manistra.API.Models.Pasta;
 using Manistra.API.ResourceParameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Manistra.API.Controllers
@@ -21,10 +22,13 @@ namespace Manistra.API.Controllers
     {
         private readonly IPastaRepository pastaRepo;
         private readonly IMapper mapper;
-        public PastaController(IPastaRepository pastaRepo, IMapper mapper)
+        private readonly UserManager<User> userManager;
+
+        public PastaController(IPastaRepository pastaRepo, IMapper mapper, UserManager<User> userManager)
         {
             this.pastaRepo = pastaRepo;
             this.mapper = mapper;
+            this.userManager = userManager;
         }
 
         [HttpGet()]
@@ -59,13 +63,50 @@ namespace Manistra.API.Controllers
             pastaEntity.DateCreated = DateTime.Now;
 
             pastaRepo.Add(pastaEntity);
-
+            
             var pastaDto = mapper.Map<PastaDto>(pastaEntity);
 
             return CreatedAtRoute(
                "GetPasta",
                new { id = pastaDto.Id },
                pastaDto);
+        }
+
+        [HttpPost("favorite/{pastaId}")]
+        public async Task<IActionResult> ToggleFavorite(long pastaId)
+        {
+            var pasta = pastaRepo.Get(pastaId);
+
+            if (pasta == null)
+            {
+                return NotFound();
+            }
+
+            var userName = HttpContext.User.Identity.Name;
+            var user = await userManager.FindByNameAsync(userName);
+
+            bool isFavorite = ToggleFavorite(pasta, user);
+
+            await userManager.UpdateAsync(user);
+
+            return Ok(new { isFavorite = isFavorite });
+        }
+
+        private bool ToggleFavorite(Pasta pasta, User user)
+        {
+            bool isFavorite = false;
+
+            if (pasta.FavoritedBy.Contains(user))
+            {
+                pasta.FavoritedBy.Remove(user);
+            }
+            else
+            {
+                pasta.FavoritedBy.Add(user);
+                isFavorite = true;
+            }
+
+            return isFavorite;
         }
     }
 }
