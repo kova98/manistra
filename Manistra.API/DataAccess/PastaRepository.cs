@@ -65,6 +65,8 @@ namespace Manistra.API.DataAccess
                 "date_descending" => x => x.OrderByDescending(x => x.DateCreated),
                 "title_ascending" => x => x.OrderBy(x => x.Title),
                 "title_descending" => x => x.OrderByDescending(x => x.Title),
+                "favoriteCount_ascending" => x => x.OrderBy(x => x.FavoritedBy.Count),
+                "favoriteCount_descending" => x => x.OrderByDescending(x => x.FavoritedBy.Count),
                 _ => x => x.OrderByDescending(x => x.Id)
             };
         }
