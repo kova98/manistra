@@ -11,6 +11,7 @@ class ManistraApiProvider {
   Client client = Client();
 
   Future<List<PastaModel>> fetchPastas(String query, String orderBy) async {
+    print('fetching');
     final parameters = buildParametersString(query, orderBy);
     final response = await client.get(
       '$_root/pasta$parameters',
@@ -40,6 +41,32 @@ class ManistraApiProvider {
     } else {
       throw Exception('Failed to post pasta');
     }
+  }
+
+  Future<List<PastaModel>> fetchFavorites() async {
+    final response = await client.get(
+      '$_root/pasta/favorite',
+      headers: getHeaders(),
+    );
+
+    if (response.statusCode == 200) {
+      final pastas = json.decode(response.body) as List;
+      final pastaList =
+          pastas.map((item) => PastaModel.fromJson(item)).toList();
+
+      return pastaList;
+    } else {
+      throw Exception('Failed to fetch favorites');
+    }
+  }
+
+  Future<bool> toggleFavorite(int id) async {
+    var response = await client.post(
+      '$_root/pasta/favorite/$id',
+      headers: getHeaders(),
+    );
+
+    return response.statusCode == 200;
   }
 
   getHeaders() {

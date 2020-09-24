@@ -8,7 +8,15 @@ class Repository {
     return manistraApiProvider.fetchPastas(query, orderBy);
   }
 
+  Future<List<PastaModel>> fetchFavorites() {
+    return manistraApiProvider.fetchFavorites();
+  }
+
   Future<PastaModel> submitPasta(PastaModel pasta) {
     return manistraApiProvider.submitPasta(pasta);
+  }
+
+  Future<bool> toggleFavorite(int id) {
+    return manistraApiProvider.toggleFavorite(id);
   }
 }

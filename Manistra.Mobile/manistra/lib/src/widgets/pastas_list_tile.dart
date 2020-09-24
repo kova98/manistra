@@ -24,13 +24,15 @@ class PastasListTile extends StatelessWidget with ClipboardHelper {
             onLongPress: () => copy(context, pasta.content),
             title: Text(
               pasta.title,
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 18),
             ),
             trailing: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(Icons.favorite_border),
+                pasta.isFavorite
+                    ? Icon(Icons.favorite, color: Colors.red)
+                    : Icon(Icons.favorite_border),
                 Text('0'),
               ],
             ),

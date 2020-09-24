@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:manistra/src/blocs/pastas_provider.dart';
 import 'package:manistra/src/helpers/clipboard_helper.dart';
 import 'package:manistra/src/models/pasta_model.dart';
+import 'package:manistra/src/widgets/favorite_icon_button.dart';
 
 class PastaDetailScreen extends StatelessWidget with ClipboardHelper {
-  final PastaModel pasta;
+  final PastaModel _pasta;
 
-  PastaDetailScreen(this.pasta);
+  PastaDetailScreen(this._pasta);
 
   @override
   Widget build(BuildContext context) {
+    final bloc = PastasProvider.of(context);
+
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(
-            icon: Icon(Icons.favorite_border),
-            onPressed: () {},
+          FavoriteIconButton(
+            isFavorite: _pasta.isFavorite,
+            updateCallback: () => bloc.toggleFavorite(_pasta.id),
           ),
           IconButton(
             icon: Icon(Icons.content_copy),
-            onPressed: () => copy(context, pasta.content),
+            onPressed: () => copy(context, _pasta.content),
           ),
         ],
       ),
@@ -28,7 +32,7 @@ class PastaDetailScreen extends StatelessWidget with ClipboardHelper {
           child: Column(
             children: [
               Text(
-                pasta.title,
+                _pasta.title,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36),
               ),
@@ -44,7 +48,7 @@ class PastaDetailScreen extends StatelessWidget with ClipboardHelper {
               Container(
                 padding: EdgeInsets.all(10),
               ),
-              Text(pasta.content),
+              Text(_pasta.content),
             ],
           ),
         ),
