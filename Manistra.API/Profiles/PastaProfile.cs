@@ -12,7 +12,10 @@ namespace Manistra.API.Profiles
     {
         public PastaProfile()
         {
-            CreateMap<Pasta, PastaDto>();
+            CreateMap<Pasta, PastaDto>()
+                .ForMember(
+                    dest => dest.FavoriteCount,
+                    opt => opt.MapFrom(src => src.FavoritedBy.Count));
             CreateMap<PastaForCreationDto, Pasta>();
         }
     }

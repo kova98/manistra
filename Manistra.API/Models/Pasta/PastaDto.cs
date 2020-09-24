@@ -12,5 +12,6 @@ namespace Manistra.API.Models.Pasta
         public string Content { get; set; }
         public DateTimeOffset DateCreated { get; set; }
         public bool IsFavorite { get; set; }
+        public int FavoriteCount { get; set; }
     }
 }
