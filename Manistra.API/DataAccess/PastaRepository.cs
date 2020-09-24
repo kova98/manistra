@@ -1,4 +1,5 @@
-﻿using Manistra.API.Entities;
+﻿using Manistra.API.Authentication;
+using Manistra.API.Entities;
 using Manistra.API.ResourceParameters;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -26,13 +27,27 @@ namespace Manistra.API.DataAccess
 
         public IEnumerable<Pasta> GetAll(PastaResourceParameters parameters)
         {
+            return GetAllAsQueryable(parameters);
+        }
+
+        public IEnumerable<Pasta> GetFavoritesForUser(User user, PastaResourceParameters parameters)
+        {
+            var pastas = GetAllAsQueryable(parameters);
+
+            pastas = pastas.Where(x => x.FavoritedBy.Contains(user));
+
+            return pastas;
+        }
+
+        private IQueryable<Pasta> GetAllAsQueryable(PastaResourceParameters parameters)
+        {
             var pastas = context.Pastas
-                .Include(x=>x.FavoritedBy)
+                .Include(x => x.FavoritedBy)
                 .AsQueryable();
 
             if (string.IsNullOrWhiteSpace(parameters.SearchQuery) == false)
             {
-                pastas = pastas.Where(x => 
+                pastas = pastas.Where(x =>
                     x.Title.ToUpper().Contains(parameters.SearchQuery.ToUpper()) ||
                     x.Content.ToUpper().Contains(parameters.SearchQuery.ToUpper()));
             }

@@ -100,6 +100,19 @@ namespace Manistra.API.Controllers
             return Ok(new { isFavorite = isFavorite });
         }
 
+        [HttpGet("favorite")]
+        public async Task<ActionResult<IEnumerable<PastaDto>>> GetFavorites(
+            [FromQuery] PastaResourceParameters parameters)
+        {
+            var user = await GetUser();
+            var pastas = pastaRepo.GetFavoritesForUser(user, parameters);
+            var pastasDto = mapper.Map<IEnumerable<PastaDto>>(pastas).ToList();
+
+            pastasDto.ForEach(x => x.IsFavorite = true);
+
+            return Ok(pastasDto);
+        }
+
         private bool ToggleFavorite(Pasta pasta, User user)
         {
             bool isFavorite = false;
