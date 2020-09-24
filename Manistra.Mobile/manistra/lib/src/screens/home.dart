@@ -52,9 +52,9 @@ class Home extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            PastasList(bloc.latestPastas),
-            PastasList(bloc.topPastas),
-            PastasList(bloc.favoritePastas),
+            PastasList(bloc.latestPastas, bloc.fetchLatest),
+            PastasList(bloc.topPastas, bloc.fetchTop),
+            PastasList(bloc.favoritePastas, bloc.fetchFavorites),
           ],
         ),
       ),

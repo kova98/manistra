@@ -39,9 +39,9 @@ class PastasSearchDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     bloc.searchQuery = query;
-    bloc.fetchPastas();
+    bloc.searchPastas();
 
-    return PastasList(bloc.pastas);
+    return PastasList(bloc.searchResults, bloc.searchPastas());
   }
 
   @override

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:manistra/src/helpers/clipboard_helper.dart';
 
 class FavoriteIconButton extends StatefulWidget {
   final Future<bool> Function() updateCallback;

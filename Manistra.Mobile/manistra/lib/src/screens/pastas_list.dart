@@ -1,22 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:manistra/src/blocs/pastas_provider.dart';
 import 'package:manistra/src/models/pasta_model.dart';
 import 'package:manistra/src/widgets/pastas_list_tile.dart';
 
 class PastasList extends StatelessWidget {
   final Stream<List<PastaModel>> stream;
+  final Function refresh;
 
-  PastasList(this.stream);
+  PastasList(this.stream, this.refresh);
 
   Widget build(context) {
-    final bloc = PastasProvider.of(context);
-
     return StreamBuilder(
       stream: stream,
       builder: (context, AsyncSnapshot<List<PastaModel>> snapshot) {
         if (!snapshot.hasData) {
-          bloc.fetchPastas();
+          refresh();
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -30,9 +28,7 @@ class PastasList extends StatelessWidget {
                 );
               },
             ),
-            onRefresh: () async {
-              await bloc.fetchPastas();
-            },
+            onRefresh: () => refresh(),
           );
         }
       },
