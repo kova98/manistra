@@ -18,11 +18,11 @@ namespace Manistra.API.Controllers
     [ApiController]
     public class AuthenticateController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly UserManager<User> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IConfiguration _configuration;
 
-        public AuthenticateController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public AuthenticateController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
@@ -39,7 +39,7 @@ namespace Manistra.API.Controllers
                 return Conflict(new { message = "User already exists." });
             }
 
-            var user = new ApplicationUser()
+            var user = new User()
             {
                 Email = model.Email,
                 UserName = model.Username,
@@ -78,7 +78,7 @@ namespace Manistra.API.Controllers
             });
         }
 
-        private async Task<List<Claim>> GetUserClaims(ApplicationUser user)
+        private async Task<List<Claim>> GetUserClaims(User user)
         {
             var authClaims = new List<Claim>
             {

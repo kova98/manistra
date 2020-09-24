@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Manistra.API.Migrations.AppIdentityDb
+namespace Manistra.API.Migrations
 {
-    public partial class Identity : Migration
+    public partial class IdentityInitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

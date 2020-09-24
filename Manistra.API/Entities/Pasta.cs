@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Manistra.API.Authentication;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace Manistra.API.Entities
         public string Title { get; set; }
         public string Content { get; set; }
         public DateTimeOffset DateCreated { get; set; }
+        public ICollection<User> FavoritedBy { get; set; }
     }
 }

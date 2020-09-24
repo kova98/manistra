@@ -38,16 +38,13 @@ namespace Manistra.API
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(Configuration.GetSection("Data:ConnectionString").Value));
 
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseNpgsql(Configuration.GetSection("Data:ConnectionString").Value));
-
             services.AddTransient<IPastaRepository, PastaRepository>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services
-                .AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppIdentityDbContext>()
+                .AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddAuthentication(options =>
