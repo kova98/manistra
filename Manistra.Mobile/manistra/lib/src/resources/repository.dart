@@ -1,14 +1,26 @@
 import 'package:manistra/src/models/pasta_model.dart';
 import 'package:manistra/src/resources/manistra_api_provider.dart';
 
+import 'manistra_db_provider.dart';
+
 class Repository {
   final manistraApiProvider = ManistraApiProvider();
+  final manistraDbProvider = ManistraDbProvider();
 
-  Future<List<PastaModel>> fetchPastas({String query, String orderBy}) {
-    return manistraApiProvider.fetchPastas(query, orderBy);
+  Future<List<PastaModel>> fetchPastas({String query, String orderBy}) async {
+    // var pastas = await manistraDbProvider.fetchPastas(orderBy);
+
+    // if (pastas == null) {
+    //   pastas = await manistraApiProvider.fetchPastas(query, orderBy);
+
+    //   manistraDbProvider.addPastas((pastas));
+    // }
+    print('fetching pastas');
+    return await manistraApiProvider.fetchPastas(query, orderBy);
   }
 
   Future<List<PastaModel>> fetchFavorites() {
+    print('fetching favorites');
     return manistraApiProvider.fetchFavorites();
   }
 

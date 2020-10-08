@@ -4,10 +4,10 @@ import 'package:rxdart/rxdart.dart';
 
 class PastasBloc {
   final _repository = Repository();
-  final _searchResults = BehaviorSubject<List<PastaModel>>();
-  final _topPastas = BehaviorSubject<List<PastaModel>>();
-  final _newPastas = BehaviorSubject<List<PastaModel>>();
-  final _favoritePastas = BehaviorSubject<List<PastaModel>>();
+  final _searchResults = PublishSubject<List<PastaModel>>();
+  final _topPastas = PublishSubject<List<PastaModel>>();
+  final _newPastas = PublishSubject<List<PastaModel>>();
+  final _favoritePastas = PublishSubject<List<PastaModel>>();
 
   String searchQuery = "";
   bool isSearching = false;
@@ -17,25 +17,44 @@ class PastasBloc {
   Stream<List<PastaModel>> get latestPastas => _newPastas.stream;
   Stream<List<PastaModel>> get favoritePastas => _favoritePastas.stream;
 
-  searchPastas() async {
+  List<PastaModel> _topPastasCache = List<PastaModel>();
+  List<PastaModel> _latestPastasCache = List<PastaModel>();
+  List<PastaModel> _favoritePastasCache = List<PastaModel>();
+
+  void searchPastas() async {
     final pastas = await _repository.fetchPastas(query: searchQuery);
     _searchResults.sink.add(pastas);
   }
 
-  fetchTop() async {
-    final top =
-        await _repository.fetchPastas(orderBy: 'favoriteCount_descending');
-    _topPastas.sink.add(top);
+  void fetchTop() async {
+    if (_topPastasCache.length > 0) {
+      _topPastas.sink.add(_topPastasCache);
+    } else {
+      final top =
+          await _repository.fetchPastas(orderBy: 'favoriteCount_descending');
+      _topPastas.sink.add(top);
+      _topPastasCache.addAll(top);
+    }
   }
 
-  fetchLatest() async {
-    final latest = await _repository.fetchPastas(orderBy: 'date_descending');
-    _newPastas.sink.add(latest);
+  void fetchLatest() async {
+    if (_latestPastasCache.length > 0) {
+      _newPastas.sink.add(_latestPastasCache);
+    } else {
+      final latest = await _repository.fetchPastas(orderBy: 'date_descending');
+      _newPastas.sink.add(latest);
+      _latestPastasCache.addAll(latest);
+    }
   }
 
-  fetchFavorites() async {
-    final favorites = await _repository.fetchFavorites();
-    _favoritePastas.sink.add(favorites);
+  void fetchFavorites() async {
+    if (_favoritePastasCache.length > 0) {
+      _favoritePastas.sink.add(_favoritePastasCache);
+    } else {
+      final favorites = await _repository.fetchFavorites();
+      _favoritePastas.sink.add(favorites);
+      _favoritePastasCache.addAll(favorites);
+    }
   }
 
   Future<bool> toggleFavorite(id) async {
@@ -43,7 +62,7 @@ class PastasBloc {
     return result;
   }
 
-  dispose() {
+  void dispose() {
     _searchResults.close();
     _topPastas.close();
     _newPastas.close();

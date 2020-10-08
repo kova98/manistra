@@ -23,7 +23,7 @@ class SubmitBloc with SubmitValidators {
       content: _content.value,
     );
 
-    return await _repo.submitPasta(pasta);
+    return _repo.submitPasta(pasta);
   }
 
   dispose() {
