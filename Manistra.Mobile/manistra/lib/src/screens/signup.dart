@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:manistra/src/helpers/auth_helper.dart';
 import 'package:manistra/src/resources/repository.dart';
+import 'package:manistra/src/screens/home.dart';
 import 'package:manistra/src/widgets/social_media_buttons.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -16,6 +18,8 @@ class SignupScreenState extends State<SignupScreen> {
   final TextEditingController _password = TextEditingController();
   final TextEditingController _confirmPassword = TextEditingController();
 
+  String errorText = '';
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -29,6 +33,7 @@ class SignupScreenState extends State<SignupScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(padding: EdgeInsets.all(10)),
+                errorTextWidget(),
                 usernameField(size),
                 passwordField(size),
                 confirmPasswordField(size),
@@ -39,6 +44,16 @@ class SignupScreenState extends State<SignupScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget errorTextWidget() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(70, 0, 70, 10),
+      child: Text(
+        errorText,
+        style: TextStyle(color: Colors.red),
       ),
     );
   }
@@ -82,8 +97,8 @@ class SignupScreenState extends State<SignupScreen> {
         obscureText: true,
         controller: _password,
         validator: (value) {
-          if (value.isEmpty) {
-            return 'Please enter a password';
+          if (value.length < 8) {
+            return 'The password is too short';
           }
           return null;
         },
@@ -146,14 +161,33 @@ class SignupScreenState extends State<SignupScreen> {
   Widget orText() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 10, 8, 8),
-      child: Text(
-        'OR',
-        style: TextStyle(color: Colors.black45),
-      ),
+      child: Text('OR', style: TextStyle(color: Colors.black45)),
     );
   }
 
-  void submitForm(username, password) {
-    final response = _repo.signUp(username, password);
+  void submitForm(username, password) async {
+    final signUpresponse = await _repo.signUp(username, password);
+
+    if (signUpresponse.success) {
+      final loginResponse = await _repo.logIn(username, password);
+
+      if (loginResponse.success) {
+        AuthHelper.logIn(loginResponse.token, username);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Home(),
+          ),
+        );
+      } else {
+        setState(() {
+          errorText = loginResponse.error;
+        });
+      }
+    } else {
+      setState(() {
+        errorText = signUpresponse.error;
+      });
+    }
   }
 }

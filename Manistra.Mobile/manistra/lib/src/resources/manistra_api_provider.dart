@@ -80,11 +80,16 @@ class ManistraApiProvider {
 
     if (response.statusCode == 200) {
       return AuthResponse(success: true);
+    } else if (response.statusCode == 409) {
+      return AuthResponse(
+        success: false,
+        error: 'User already exists.',
+      );
     } else {
       var responseMap = jsonDecode(response.body);
       return AuthResponse(
         success: false,
-        error: responseMap['message'],
+        error: responseMap[0]['description'],
       );
     }
   }
