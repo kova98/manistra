@@ -14,8 +14,10 @@ class WelcomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('assets/manistra_logo.png', height: 300),
-            Text('manistra', style: TextStyle(fontSize: 50)),
-            Container(padding: EdgeInsets.all(20)),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Text('manistra', style: TextStyle(fontSize: 50)),
+            ),
             logInButton(context, size),
             signUpButton(context, size),
             continueButton(context)

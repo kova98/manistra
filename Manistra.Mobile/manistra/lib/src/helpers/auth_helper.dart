@@ -1,25 +1,32 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthHelper {
-  static String _token;
-
   static Future<String> getToken() async {
     final prefs = await SharedPreferences.getInstance();
-    if (_token == null || _token.isEmpty) {
-      _token = prefs.getString('token');
-    }
-
-    return _token;
+    final token = prefs.getString('token');
+    return token;
   }
 
-  static setToken(value) async {
+  static Future<String> getUsername() async {
     final prefs = await SharedPreferences.getInstance();
-
-    prefs.setString('token', value);
+    final username = prefs.getString('username');
+    return username;
   }
 
   static Future<bool> isAuthorized() async {
-    await getToken();
-    return _token != null && _token.isNotEmpty;
+    final token = await getToken();
+    return token != null && token.isNotEmpty;
+  }
+
+  static logIn(String token, String username) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('token', token);
+    prefs.setString('username', username);
+  }
+
+  static signOut() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('token', null);
+    prefs.setString('username', null);
   }
 }

@@ -22,7 +22,6 @@ class ManistraApiProvider {
       final pastas = json.decode(response.body) as List;
       final pastaList =
           pastas.map((item) => PastaModel.fromJson(item)).toList();
-
       return pastaList;
     } else {
       throw Exception('Failed to fetch pastas');

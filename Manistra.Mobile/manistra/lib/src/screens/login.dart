@@ -144,7 +144,7 @@ class LoginScreenState extends State<LoginScreen> {
     final response = await _repo.logIn(username, password);
 
     if (response.success) {
-      AuthHelper.setToken(response.token);
+      AuthHelper.logIn(response.token, username);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
