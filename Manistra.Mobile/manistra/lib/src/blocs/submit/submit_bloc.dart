@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:manistra/src/blocs/submit_validators.dart';
+import 'package:manistra/src/blocs/submit/submit_validators.dart';
 import 'package:manistra/src/models/pasta_model.dart';
 import 'package:manistra/src/resources/repository.dart';
 import 'package:rxdart/rxdart.dart';

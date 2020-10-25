@@ -15,7 +15,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Manistra.API.Controllers
 {
-    [Authorize]
     [Route("api/pasta")]
     [ApiController]
     public class PastaController : ControllerBase
@@ -38,10 +37,12 @@ namespace Manistra.API.Controllers
             var pastas = pastaRepo.GetAll(parameters);
             var pastasDto = mapper.Map<IEnumerable<PastaDto>>(pastas);
 
-            var user = await GetUser();
-
-            SetIsFavoriteForPastaDto(pastas, pastasDto, user);
-
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await GetUser();
+                SetIsFavoriteForPastaDto(pastas, pastasDto, user);
+            }
+            
             return Ok(pastasDto);
         }
 
@@ -64,7 +65,7 @@ namespace Manistra.API.Controllers
             return Ok(pastaDto);
         }
 
-
+        [Authorize]
         [HttpPost]
         public ActionResult<PastaDto> CreatePasta(PastaForCreationDto pasta)
         {
@@ -81,6 +82,7 @@ namespace Manistra.API.Controllers
                pastaDto);
         }
 
+        [Authorize]
         [HttpPost("favorite/{pastaId}")]
         public async Task<IActionResult> ToggleFavorite(long pastaId)
         {
@@ -100,6 +102,7 @@ namespace Manistra.API.Controllers
             return Ok(new { isFavorite = isFavorite });
         }
 
+        [Authorize]
         [HttpGet("favorite")]
         public async Task<ActionResult<IEnumerable<PastaDto>>> GetFavorites(
             [FromQuery] PastaResourceParameters parameters)

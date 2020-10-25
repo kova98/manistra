@@ -116,6 +116,8 @@ class ManistraDbProvider {
         return "favoriteCount DESC";
       case "date_descending":
         return "datetime(dateCreated) DESC";
+      default:
+        throw Exception('Invalid orderBy string.');
     }
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:manistra/src/blocs/pastas_provider.dart';
+import 'package:manistra/src/blocs/pastas/pastas_provider.dart';
 import 'package:manistra/src/helpers/clipboard_helper.dart';
 import 'package:manistra/src/models/pasta_model.dart';
 import 'package:manistra/src/widgets/favorite_icon_button.dart';

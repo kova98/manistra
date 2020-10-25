@@ -1,21 +1,21 @@
 import 'dart:convert';
 
+import 'package:manistra/src/models/auth_response.dart';
 import 'package:manistra/src/models/pasta_model.dart';
 import 'package:http/http.dart' show Client;
+import 'package:shared_preferences/shared_preferences.dart';
 
 final _root = 'http://10.0.2.2:62469/api';
-final _token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidGVzdCIsImp0aSI6ImMyMjVlY2FmLWY3YzEtNDRjMC05YzJiLWU2MzkxODcyZjg2YiIsImV4cCI6MTYwMzI5MzMzMSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo2MjQ2OSIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NjI0NjkifQ.A49Dn0mAZtqwz8TOmoA1EvNm7hWOc0t_Z_ke7OTYxR0';
 
 class ManistraApiProvider {
   Client client = Client();
 
   Future<List<PastaModel>> fetchPastas(String query, String orderBy) async {
     print('fetching');
-    final parameters = buildParametersString(query, orderBy);
+    final parameters = _buildParametersString(query, orderBy);
     final response = await client.get(
       '$_root/pasta$parameters',
-      headers: getHeaders(),
+      headers: await _getHeaders(),
     );
 
     if (response.statusCode == 200) {
@@ -32,7 +32,7 @@ class ManistraApiProvider {
   Future<PastaModel> submitPasta(PastaModel pasta) async {
     var response = await client.post(
       '$_root/pasta',
-      headers: getHeaders(),
+      headers: await _getHeaders(),
       body: json.encode(pasta.toMap()),
     );
 
@@ -46,7 +46,7 @@ class ManistraApiProvider {
   Future<List<PastaModel>> fetchFavorites() async {
     final response = await client.get(
       '$_root/pasta/favorite',
-      headers: getHeaders(),
+      headers: await _getHeaders(),
     );
 
     if (response.statusCode == 200) {
@@ -63,20 +63,68 @@ class ManistraApiProvider {
   Future<bool> toggleFavorite(int id) async {
     var response = await client.post(
       '$_root/pasta/favorite/$id',
-      headers: getHeaders(),
+      headers: await _getHeaders(),
     );
 
     return response.statusCode == 200;
   }
 
-  getHeaders() {
+  Future<AuthResponse> signUp(String username, String password) async {
+    var response = await client.post(
+      '$_root/authenticate/register',
+      headers: await _getHeaders(),
+      body: json.encode({
+        "username": username,
+        "password": password,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return AuthResponse(success: true);
+    } else {
+      var responseMap = jsonDecode(response.body);
+      return AuthResponse(
+        success: false,
+        error: responseMap['message'],
+      );
+    }
+  }
+
+  Future<AuthResponse> logIn(String username, String password) async {
+    var response = await client.post(
+      '$_root/authenticate/login',
+      headers: await _getHeaders(),
+      body: json.encode({
+        "username": username,
+        "password": password,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      var responseMap = jsonDecode(response.body);
+      return AuthResponse(
+        success: true,
+        token: responseMap['token'],
+      );
+    } else {
+      return AuthResponse(
+        success: false,
+        error: 'Invalid username or password',
+      );
+    }
+  }
+
+  Future<Map<String, String>> _getHeaders() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
     return <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $_token'
+      'Authorization': 'Bearer $token'
     };
   }
 
-  buildParametersString(String query, String orderBy) {
+  _buildParametersString(String query, String orderBy) {
     var parametersString = '';
 
     if (query != null && query.isNotEmpty) {

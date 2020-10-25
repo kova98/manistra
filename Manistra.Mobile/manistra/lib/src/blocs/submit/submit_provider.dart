@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:manistra/src/blocs/submit_bloc.dart';
+import 'package:manistra/src/blocs/submit/submit_bloc.dart';
 
 class SubmitProvider extends InheritedWidget {
   final bloc = SubmitBloc();

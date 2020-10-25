@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:manistra/src/blocs/pastas_bloc.dart';
+import 'package:manistra/src/blocs/pastas/pastas_bloc.dart';
 import 'package:manistra/src/screens/pastas_list.dart';
 
 class PastasSearchDelegate extends SearchDelegate {

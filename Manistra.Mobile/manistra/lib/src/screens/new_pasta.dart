@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:manistra/src/blocs/submit_bloc.dart';
-import 'package:manistra/src/blocs/submit_provider.dart';
+import 'package:manistra/src/blocs/submit/submit_bloc.dart';
+import 'package:manistra/src/blocs/submit/submit_provider.dart';
 import 'package:manistra/src/screens/pasta_detail.dart';
 
 class NewPastaScreen extends StatelessWidget {

@@ -26,7 +26,7 @@ class PastaModel {
         "id": id,
         "title": title,
         "content": content,
-        "isFavorite": isFavorite ? 1 : 0,
+        "isFavorite": intToBool(isFavorite),
         "favoriteCount": favoriteCount,
         "dateCreated": dateCreated
       };
@@ -38,4 +38,11 @@ class PastaModel {
         isFavorite = parsedJson['isFavorite'] == 1,
         favoriteCount = parsedJson['favoriteCount'],
         dateCreated = parsedJson['dateCreated'];
+
+  intToBool(bool isFavorite) {
+    if (isFavorite == null) {
+      return 0;
+    }
+    return isFavorite ? 1 : 0;
+  }
 }

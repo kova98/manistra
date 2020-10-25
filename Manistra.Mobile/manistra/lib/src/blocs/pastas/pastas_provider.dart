@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:manistra/src/blocs/pastas_bloc.dart';
+import 'package:manistra/src/blocs/pastas/pastas_bloc.dart';
 
 class PastasProvider extends InheritedWidget {
   final PastasBloc bloc;
