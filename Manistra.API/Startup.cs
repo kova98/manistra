@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Manistra.API.Helpers;
 
 namespace Manistra.API
 {
@@ -36,7 +37,7 @@ namespace Manistra.API
             services.AddControllers();
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(Configuration.GetSection("Data:ConnectionString").Value));
+                options.UseNpgsql(ConnectionStringHelper.ConnectionString));
 
             services.AddTransient<IPastaRepository, PastaRepository>();
 

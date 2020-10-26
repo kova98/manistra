@@ -26,6 +26,14 @@
     "Docker": {
       "commandName": "Docker",
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/weatherforecast",
+      "environmentVariables": {
+        "Key": "Value",
+        "POSTGRES_PASSWORD": "manistra",
+        "POSTGRES_USER": "manistra",
+        "POSTGRES_HOST": "host.docker.internal",
+        "POSTGRES_PORT": "5432",
+        "POSTGRES_DATABASE": "manistra"
+      },
       "publishAllPorts": true,
       "useSSL": true
     }
