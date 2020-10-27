@@ -27,5 +27,16 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - 
       name: Test
-      run: dotnet test --no-restore --verbosity normal
-      
+      run: dotnet test --no-restore --verbosity normal 
+    -
+      name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+        
+    - name: Push to DigitalOcean
+      uses: docker/build-push-action@v1
+      with:
+        registry: registry.digitalocean.com
+        repository: manistra/manistra
+        tag_with_ref: true  
