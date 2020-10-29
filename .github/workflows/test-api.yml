@@ -38,5 +38,5 @@ jobs:
       uses: docker/build-push-action@v1
       with:
         registry: registry.digitalocean.com
-        repository: manistra/manistra
+        repository: kova98/manistra
         tag_with_ref: true  
