@@ -1,4 +1,4 @@
-name: .NET Core
+name: Manistra.API CI/CD Pipeline
 
 on:
   push:
@@ -7,8 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  Test:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,15 +27,31 @@ jobs:
     - 
       name: Test
       run: dotnet test --no-restore --verbosity normal 
-    -
-      name: Install doctl
-      uses: digitalocean/action-doctl@v2
-      with:
-        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-        
-    - name: Push to DigitalOcean
-      uses: docker/build-push-action@v2
-      with:
-        registry: registry.digitalocean.com
-        repository: kova98/manistra
-        tag_with_ref: true  
+      
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - 
+        name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Manistra.API/Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/386
+          push: true
+          tags: user/app:latest
+      -
+        name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
