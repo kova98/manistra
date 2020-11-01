@@ -47,8 +47,8 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: .
-          file: ./Manistra.API/Dockerfile
+          context: ./Manistra.API
+          file: ./Dockerfile
           platforms: linux/amd64,linux/arm64,linux/386
           push: true
           tags: user/app:latest
