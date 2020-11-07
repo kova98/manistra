@@ -2,6 +2,10 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/Manistra.API",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:62469",
       "sslPort": 44331
@@ -19,21 +23,14 @@
     "Manistra.API": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "POSTGRES_CONNECTION_STRING": "User ID=manistra;Password=manistra;Host=localhost;Port=5432;Database=manistra;"
       },
       "applicationUrl": "http://localhost:62469"
     },
     "Docker": {
       "commandName": "Docker",
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/weatherforecast",
-      "environmentVariables": {
-        "Key": "Value",
-        "POSTGRES_PASSWORD": "manistra",
-        "POSTGRES_USER": "manistra",
-        "POSTGRES_HOST": "host.docker.internal",
-        "POSTGRES_PORT": "5432",
-        "POSTGRES_DATABASE": "manistra"
-      },
       "publishAllPorts": true,
       "useSSL": true
     }
